@@ -1,0 +1,28 @@
+@startuml
+title: Little Farm
+
+abstract Animal {
+  # name : String
+
+  + talk() : void
+}
+
+class Cat {
+
+  + eat() : void
+}
+
+class Dog {
+  + playCatch() : void
+}
+
+class Main
+
+Animal <|-- Cat
+Animal <|-- Dog
+
+Main .. Animal
+
+
+
+@enduml
