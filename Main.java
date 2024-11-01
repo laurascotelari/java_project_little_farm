@@ -17,6 +17,8 @@ public class Main{
             
             if(talkers[i] instanceof Dog){
                 ((Dog) talkers[i]).playCatch();
+            }else if (talkers[i] instanceof Cat){
+                ((Cat) talkers[i]).eat();
             }
         }
     }
