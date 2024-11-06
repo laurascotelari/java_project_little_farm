@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class Main{
     public static ArrayList<Animal> initializeAnimals(){
@@ -57,17 +60,17 @@ public class Main{
         return newAnimal;
     }
 
-    public static boolean menu(int option, String[] options, ArrayList<Animal> animals, String[] animalTypes, Scanner scan){
-        System.out.printf("%s\n", options[option - 1]);
+    public static boolean menu(int option, String[] options, ArrayList<Animal> animals, String[] animalTypes, Hashtable<String, Integer> animalDict, Scanner scan){
+        System.out.printf("\n%s\n", options[option - 1]);
 
         switch(option){
-            case 1:                
+            case 1: //Animal Tour               
                 for(Animal animal : animals){
                     System.out.printf("\t");
                     animal.talk();
                 }
                 break; 
-            case 2:
+            case 2: // Play with animal
                 for(Animal animal : animals){
                     System.out.printf("\t");
                     if(animal instanceof Dog){
@@ -77,15 +80,18 @@ public class Main{
                     }
                 }
                 break;
-            case 3:
+            case 3: // Add new animal
                 Animal newAnimal = readNewAnimal(animalTypes, scan);
 
                 if(newAnimal != null){
                     animals.add(newAnimal);
+                    addAnimalToDict(newAnimal, animalDict);
                 }else{
                     System.out.println("It was not possible to create a new animal.");
                 }
-                
+                break;
+            case 4:
+                printAnimalDict(animalDict);
                 break;
             case 6:
                 //Exit option - end menu loop
@@ -97,6 +103,39 @@ public class Main{
         return false;
 
     }
+
+    public static void printAnimalDict(Hashtable<String, Integer> animalDict) {
+        for (Map.Entry<String, Integer> entry : animalDict.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+
+    public static void addAnimalToDict(Animal animal, Hashtable<String, Integer> animalDict){
+        if(animal instanceof Cat){
+            animalDict.put("cat", animalDict.get("cat") + 1);
+        }else if(animal instanceof Dog){
+            animalDict.put("dog", animalDict.get("dog") + 1);
+        }
+    }
+
+    public static Hashtable<String, Integer> fillAnimalDictionary(ArrayList<Animal> animals, String[] animalTypes){
+        //dictionary for the animal types and the current number of animals in the farm
+        Hashtable<String, Integer> animalDict = new Hashtable<String, Integer>();
+
+        for(String animalType : animalTypes){
+            animalDict.put(animalType, 0);
+        }
+
+        for(Animal animal : animals){
+            addAnimalToDict(animal, animalDict);
+        }
+        return animalDict;
+    }
+
+    public static void clearScreen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    } 
 
     public static void main(String[] args){
 
@@ -120,6 +159,8 @@ public class Main{
         String[] options = {"Animal Tour", "Play With Animal", "Add New Animal", "Show Types of Animals", "Donate Animal", "Exit"};
         String[] animalTypes = {"cat", "dog"};
 
+        Hashtable<String, Integer> animalDict = fillAnimalDictionary(animals, animalTypes);
+
         int option = 0;
 
         //Menu
@@ -134,11 +175,15 @@ public class Main{
                 System.out.printf("Select a number from 1 to %d\n", options.length);
             }
 
-            exit = menu(option, options, animals, animalTypes, scan);
+            exit = menu(option, options, animals, animalTypes, animalDict, scan);
             
             do{
-                System.out.println("\n\nPress Enter to continue.");
+                System.out.println("\n----------------------------");
+                System.out.println("\nPress Enter to go to Menu.");
             }while(!(scan.nextLine()).isEmpty());
+
+            //clears the terminal screen
+            clearScreen();
 
         }while(!exit);
         scan.close();
