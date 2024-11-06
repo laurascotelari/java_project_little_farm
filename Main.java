@@ -93,6 +93,22 @@ public class Main{
             case 4:
                 printAnimalDict(animalDict);
                 break;
+            case 5:
+                System.out.println("Select the number of the animal you want to donate: ");
+                for(int i = 0; i < animals.size(); i++){
+                    System.out.printf("\t%d - %s\n", i, animals.get(i).getName());
+                }
+                try{
+                    int num = Integer.parseInt(scan.nextLine());
+                    if (num >= 0 && num < animals.size()) {
+                        animals.remove(num - 1);
+                        System.out.printf("%s donated successfully!", animals.get(num - 1).getName());
+                    } else {
+                        System.out.println("Invalid number. Please try again.");
+                    }
+                }catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    System.out.println("Invalid input. Enter a valid number.");
+                }
             case 6:
                 //Exit option - end menu loop
                 return true;

@@ -10,6 +10,10 @@ public abstract class Animal implements Talker{
         this("Unknown animal");
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     public void talk(){
         System.out.printf("%s says ...\n", this.name);
     }
