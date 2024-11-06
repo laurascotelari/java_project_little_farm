@@ -10,6 +10,6 @@ public class Dog extends Animal{
     }
 
     public void playCatch(){
-        System.out.printf("\tThrowing the ball...\n\t...\n\t... \n\t%s caught it!\n", this.name);
+        System.out.printf("Throwing the ball...\n\t...\n\t... \n\t%s caught it!\n", this.name);
     }
 }
